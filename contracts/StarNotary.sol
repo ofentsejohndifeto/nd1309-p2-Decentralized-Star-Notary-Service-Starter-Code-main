@@ -8,11 +8,18 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721.sol"
 // StarNotary Contract declaration inheritance the ERC721 openzeppelin implementation
 contract StarNotary is ERC721 {
 
+    string public constant starName = "Star Token"; // Star name
+    string public constant starSymbol = "STTO";    // symbol of token
+    
     // Star data
     struct Star {
         string name;
     }
-
+ 
+    constructor() public {
+        starName; //initialised star name in constructor
+        starSymbol; //initialised star symbol in constructor
+    } 
     // Implement Task 1 Add a name and symbol properties
     // name: Is a short name to your token
     // symbol: Is a short string like 'USD' -> 'American Dollar'
@@ -57,22 +64,30 @@ contract StarNotary is ERC721 {
     }
 
     // Implement Task 1 lookUptokenIdToStarInfo
-    function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
-        //1. You should return the Star saved in tokenIdToStarInfo mapping
+    function lookUptokenIdToStarInfo(uint _tokenId) public view returns (string memory) {
+        require(bytes(tokenIdToStarInfo[_tokenId].name).length > 0, "Star with the provided token ID does not exist"); //convertsing name string to bytes and checks length to show that a star exists
+        return tokenIdToStarInfo[_tokenId].name; //returns star with tokenId
     }
 
     // Implement Task 1 Exchange Stars function
     function exchangeStars(uint256 _tokenId1, uint256 _tokenId2) public {
-        //1. Passing to star tokenId you will need to check if the owner of _tokenId1 or _tokenId2 is the sender
-        //2. You don't have to check for the price of the token (star)
-        //3. Get the owner of the two tokens (ownerOf(_tokenId1), ownerOf(_tokenId2)
-        //4. Use _transferFrom function to exchange the tokens.
+        address owner1 = ownerOf(_tokenId1); //gets address of owner who owns that tokenId
+        address owner2 = ownerOf(_tokenId2); //this relates to the mapping TokenIdToStarInfo which gives ownership to person who created the star
+
+        require(msg.sender == owner1 || msg.sender == owner2, "The sender is not the owner of the tokens"); // this checks if the caller of teh fucntion is the owner of either star
+
+        // Perform the token exchange
+        _transferFrom(owner1, owner2, _tokenId1); //transfers star of tokenId1 from owner1 to owner2
+        _transferFrom(owner2, owner1, _tokenId2); //transfers star of tokenId2 from owner2 to owner1
+        //with would be a probelm in development because tehre could be different values with each star and there is no verification that the msg.sender communicated with teh other star owner
     }
 
+
     // Implement Task 1 Transfer Stars
-    function transferStar(address _to1, uint256 _tokenId) public {
-        //1. Check if the sender is the ownerOf(_tokenId)
-        //2. Use the transferFrom(from, to, tokenId); function to transfer the Star
+    function transferStar(address _futureOwner, uint256 _tokenId) public {
+        require(ownerOf(_tokenId) == msg.sender, "You are not the owner of the token"); // checks if the msg.sender is teh actual woner of the star with error message if they are not the owner
+        transferFrom(msg.sender, _futureOwner, _tokenId); //initiates transfer of token
     }
+
 
 }

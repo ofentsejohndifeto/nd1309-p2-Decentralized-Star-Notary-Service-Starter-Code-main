@@ -40,10 +40,22 @@ const App = {
   },
 
   // Implement Task 4 Modify the front end of the DAPP
-  lookUp: async function (){
-    
+  lookUp: async function () {
+    const { lookUptokenIdToStarInfo } = this.meta.methods; // 'meta' has all methods deployed required to use smart contract
+    const tokenId = document.getElementById("lookid").value; // fetches value in input field
+  
+    try { // try block to catch unexpected errors
+      const starName = await lookUptokenIdToStarInfo(tokenId).call(); // calls method in msart contract to retrieve stars information  by token ID
+      if (starName !== '') { // is star empty string
+        App.setStatus(`Star Name: ${starName}`); // update status of DApp to show star if it exists
+      } else {
+        App.setStatus('Star with the provided token ID does not exist.'); // no star, status message shows that starId isnt present
+      }
+    } catch (error) {
+      console.error("Error looking up the star:", error); // any other problem the message is logged to console
+    }
   }
-
+  
 };
 
 window.App = App;
