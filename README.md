@@ -1,3 +1,17 @@
+My ERC-721 Token Name is called: 'Star Token'
+My ERC-721 Token symbol is: 'STTO'
+My verions used are:
+- Truffle v5.11.5 (core: 5.11.5)
+- Ganache v7.9.1
+- Solidity v0.5.16 (solc-js)
+- Node v18.18.2
+- Web3.js v1.10.0
+- Openzepplin-solidity v2.3
+My token address on Etherscan in the Sepolia testnet is: 0x2368ef3b1c03b8c19a4b732c5335cffcef8463499d8fbe5ce277d0fe712dc7a7 (ths is my transaction hash sicne i cannot find teh actual token address)
+Token contract: 0x0EaeA91850C7515e2d28a6a6C4c1663591742604
+
+
+
 # ND1309 C2 Ethereum Smart Contracts, Tokens and Dapps - Project Starter 
 **PROJECT: Decentralized Star Notary Service Project** - For this project, you will create a DApp by adding functionality with your smart contract and deploy it on the public testnet.
 
